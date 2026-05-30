@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() =>{
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
   const [task, setTask] = useState("");
   const AddTask = () => {
     if (task.trim() === "") return; {/* Prevent adding empty tasks1*/}
@@ -23,7 +27,7 @@ const deleteTask = (indexToDelete) => {
 /*complete function*/
 const completeTask = (indexToComplete) => {
   const updatedTasks = tasks.map((item, index) => {
-    if(index==indexToComplete){
+    if(index===indexToComplete){
   return {
     text: item.text,
     completed: !item.completed, /*toggle completed status*/ 
@@ -34,6 +38,9 @@ const completeTask = (indexToComplete) => {
 setTasks(updatedTasks);
 };
 
+useEffect(() => {
+localStorage.setItem("tasks", JSON.stringify(tasks)); //saves tasks to local storage whenever tasks state changes//
+},[tasks]); //runs whenever tasks state changes, can be used for side effects like saving to local storage//  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5E6D3]">
     <div className="w-87.5 bg-[#FFF8EA] rounded-[30px] p-6 shadow-xl min-h-137.5 flex flex-col items-center">
