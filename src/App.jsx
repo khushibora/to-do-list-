@@ -41,6 +41,14 @@ setTasks(updatedTasks);
 useEffect(() => {
 localStorage.setItem("tasks", JSON.stringify(tasks)); //saves tasks to local storage whenever tasks state changes//
 },[tasks]); //runs whenever tasks state changes, can be used for side effects like saving to local storage//  
+
+//task counter//
+const totalTasks = tasks.length;
+
+const completedTasks = tasks.filter((item) => item.completed).length;
+
+const remainingTasks = totalTasks - completedTasks;
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#F5E6D3]">
     <div className="w-87.5 bg-[#FFF8EA] rounded-[30px] p-6 shadow-xl min-h-137.5 flex flex-col items-center">
@@ -61,7 +69,24 @@ localStorage.setItem("tasks", JSON.stringify(tasks)); //saves tasks to local sto
   Current Task: {task}
 </p>
       <button onClick={AddTask} className="w-full mt-8 bg-[#E6B566] text-white py-3 rounded-2xl">Add Task</button>
+      
+      <div className="w-full flex justify-between mt-4">
+        <div className="bg-[#F5E6D3] px-4 py-2 rounded-xl shadow-sm text-center">
+          <p className="text-xs text-[#7A5C4D]"> Total</p>
+          <p className="font-bold text-[#5C4033]">{totalTasks}</p>
+        </div>
+        <div className="bg-[#F5E6D3] px-4 py-2 rounded-xl shadow-sm text-center">
+          <p className="text-xs text-[#7A5C4D]"> Completed</p>
+          <p className="font-bold text-[#5C4033]">{completedTasks}</p>
+        </div>
+        <div className="bg-[#F5E6D3] px-4 py-2 rounded-xl shadow-sm text-center">
+          <p className="text-xs text-[#7A5C4D]"> Left</p>
+          <p className="font-bold text-[#5C4033]">{remainingTasks}</p>
+        </div>
+      </div>
       <div className=" w-full mt-6 flex-1 overflow-auto "> {/*flex-1: takes up remaining space, overflow-auto: adds scrollbar if content exceeds container height*/}
+
+      
 
       {/* task card */}
         {tasks.map((item, index) => (
