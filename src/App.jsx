@@ -5,7 +5,11 @@ function App() {
   const AddTask = () => {
     if (task.trim() === "") return; {/* Prevent adding empty tasks1*/}
 
-  setTasks([...tasks, task]);
+  setTasks([...tasks, {
+    text: task,
+    completed: false,    /*updated array string of task into object */
+  },
+]);
   setTask("");
 }
 
@@ -14,6 +18,20 @@ const deleteTask = (indexToDelete) => {
   
   const updatedTasks = tasks.filter((item, index) => index !== indexToDelete);
   setTasks(updatedTasks);
+};
+
+/*complete function*/
+const completeTask = (indexToComplete) => {
+  const updatedTasks = tasks.map((item, index) => {
+    if(index==indexToComplete){
+  return {
+    text: item.text,
+    completed: !item.completed, /*toggle completed status*/ 
+  };
+  }
+  return item;
+});
+setTasks(updatedTasks);
 };
 
   return (
@@ -43,8 +61,15 @@ const deleteTask = (indexToDelete) => {
           <div
           key={index}
 
-           className="bg-[#FFF8EA] rounded-xl p-4 shadow-md m-2 flex justify-between"><span>{item}</span>
+           className="bg-[#FFF8EA] rounded-xl p-4 shadow-md m-2 flex justify-between">
+           <div><input type="checkbox" 
+           checked={item.completed}
+           onChange={() => completeTask(index)}
+           ></input><span className={item.completed ? "line-through text-[#7A5C4D]" : ""}>{item.text}</span>
+           </div>      {/* grouped this tags together to avoid cramped spacing */}
+           
             <button onClick={() => deleteTask(index)}>Delete</button>
+            
            </div>))}
       </div>
     </div>
